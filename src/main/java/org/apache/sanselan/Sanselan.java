@@ -38,6 +38,7 @@ import org.apache.sanselan.common.byteSources.ByteSourceInputStream;
 import org.apache.sanselan.icc.IccProfileInfo;
 import org.apache.sanselan.icc.IccProfileParser;
 import org.apache.sanselan.util.Debug;
+import org.apache.sanselan.formats.hdr.HdrConstants;
 
 /**
  * The primary interface to the sanselan library.
@@ -49,7 +50,7 @@ import org.apache.sanselan.util.Debug;
  * <p>
  * See the source of the SampleUsage class and other classes in the
  * org.apache.sanselan.sampleUsage package for examples.
- * 
+ *
  * @see org.apache.sanselan.sampleUsage.SampleUsage
  */
 public abstract class Sanselan implements SanselanConstants {
@@ -61,7 +62,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Returns true if the file has a file extension associated with a file
 	 * format, such as .jpg or .gif.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File which may contain an image.
 	 * @return true if the file has an image format file extension.
@@ -79,7 +80,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Returns true if the filename has a file extension associated with a file
 	 * format, such as .jpg or .gif.
 	 * <p>
-	 * 
+	 *
 	 * @param filename
 	 *            String representing name of file which may contain an image.
 	 * @return true if the filename has an image format file extension.
@@ -106,7 +107,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Tries to guess what the image type (if any) of data based on the file's
 	 * "magic numbers," the first bytes of the data.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return An ImageFormat, such as ImageFormat.IMAGE_FORMAT_JPEG. Returns
@@ -122,7 +123,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Tries to guess what the image type (if any) of a file based on the file's
 	 * "magic numbers," the first bytes of the file.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return An ImageFormat, such as ImageFormat.IMAGE_FORMAT_JPEG. Returns
@@ -196,7 +197,12 @@ public abstract class Sanselan implements SanselanConstants {
 
 				if (b3 == 0x42 && b4 == 0x32)
 					return ImageFormat.IMAGE_FORMAT_JBIG2;
-			}
+			} else if ( b1 == 0x23 && b2 == 0x3F ) {
+                if ( byteSource.compareByteArrays( HdrConstants.HEADER,
+                                                   byteSource.getBlock( 0, HdrConstants.HEADER.length )  ) ) {
+                    return ImageFormat.IMAGE_FORMAT_HDR;
+                }
+            }
 
 			return ImageFormat.IMAGE_FORMAT_UNKNOWN;
 		} finally {
@@ -216,7 +222,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Extracts an ICC Profile (if present) from JPEG, PNG, PSD (Photoshop) and
 	 * TIFF images.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return An instance of ICC_Profile or null if the image contains no ICC
@@ -231,7 +237,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Extracts an ICC Profile (if present) from JPEG, PNG, PSD (Photoshop) and
 	 * TIFF images.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @param params
@@ -248,7 +254,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Extracts an ICC Profile (if present) from JPEG, PNG, PSD (Photoshop) and
 	 * TIFF images.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -265,7 +271,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Extracts an ICC Profile (if present) from JPEG, PNG, PSD (Photoshop) and
 	 * TIFF images.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -284,7 +290,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Extracts an ICC Profile (if present) from JPEG, PNG, PSD (Photoshop) and
 	 * TIFF images.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return An instance of ICC_Profile or null if the image contains no ICC
@@ -299,7 +305,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Extracts an ICC Profile (if present) from JPEG, PNG, PSD (Photoshop) and
 	 * TIFF images.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @param params
@@ -336,7 +342,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * To parse the result use IccProfileParser or
 	 * ICC_Profile.getInstance(bytes).
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return A byte array.
@@ -355,7 +361,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * To parse the result use IccProfileParser or
 	 * ICC_Profile.getInstance(bytes).
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @param params
@@ -376,7 +382,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * To parse the result use IccProfileParser or
 	 * ICC_Profile.getInstance(bytes).
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return A byte array.
@@ -395,7 +401,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * To parse the result use IccProfileParser or
 	 * ICC_Profile.getInstance(bytes).
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @param params
@@ -424,7 +430,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image metadata."
 	 * <p>
-	 * 
+	 *
 	 * @param filename
 	 *            String.
 	 * @param bytes
@@ -447,7 +453,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image metadata."
 	 * <p>
-	 * 
+	 *
 	 * @param filename
 	 *            String.
 	 * @param bytes
@@ -468,7 +474,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image metadata."
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -489,7 +495,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image metadata."
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -512,7 +518,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image metadata."
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return An instance of ImageInfo.
@@ -531,7 +537,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image metadata."
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @param params
@@ -552,7 +558,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image metadata."
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @param params
@@ -573,7 +579,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image metadata."
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return An instance of ImageInfo.
@@ -627,7 +633,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -642,7 +648,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -659,7 +665,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return The width and height of the image.
@@ -672,7 +678,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @param params
@@ -687,7 +693,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image file.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return The width and height of the image.
@@ -700,7 +706,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image file.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @param params
@@ -718,12 +724,12 @@ public abstract class Sanselan implements SanselanConstants {
 
 		return imageParser.getImageSize(byteSource, params);
 	}
-	
+
 
 	/**
 	 * Determines the width and height of an image.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -738,7 +744,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -755,7 +761,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return Xmp Xml as String, if present.  Otherwise, returns null.
@@ -768,7 +774,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Determines the width and height of an image.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @param params
@@ -783,7 +789,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Extracts embedded XML metadata as XML string.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return Xmp Xml as String, if present.  Otherwise, returns null.
@@ -796,7 +802,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Extracts embedded XML metadata as XML string.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @param params
@@ -811,7 +817,7 @@ public abstract class Sanselan implements SanselanConstants {
 	/**
 	 * Extracts embedded XML metadata as XML string.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @param params
@@ -837,7 +843,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image info."
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return An instance of IImageMetadata.
@@ -860,7 +866,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image info."
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @param params
@@ -885,7 +891,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image info."
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -910,7 +916,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image info."
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -937,7 +943,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image info."
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return An instance of IImageMetadata.
@@ -960,7 +966,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Not to be confused with "image info."
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @param params
@@ -985,7 +991,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Useful for exploring format-specific details of image files.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return A description of the image file's structure.
@@ -1000,7 +1006,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * <p>
 	 * Useful for exploring format-specific details of image files.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return A description of the image file's structure.
@@ -1040,7 +1046,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Useful for image formats such as GIF and ICO in which a single file may
 	 * contain multiple images.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream from which to read image data.
 	 * @param filename
@@ -1058,7 +1064,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Useful for image formats such as GIF and ICO in which a single file may
 	 * contain multiple images.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return A vector of BufferedImages.
@@ -1074,7 +1080,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * Useful for image formats such as GIF and ICO in which a single file may
 	 * contain multiple images.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return A vector of BufferedImages.
@@ -1127,7 +1133,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream to read image data from.
 	 * @return A BufferedImage.
@@ -1149,7 +1155,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param is
 	 *            InputStream to read image data from.
 	 * @param params
@@ -1176,7 +1182,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @return A BufferedImage.
@@ -1198,7 +1204,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param bytes
 	 *            Byte array containing an image file.
 	 * @param params
@@ -1222,7 +1228,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @return A BufferedImage.
@@ -1244,7 +1250,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param file
 	 *            File containing image data.
 	 * @param params
@@ -1277,7 +1283,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param src
 	 *            The BufferedImage to be written.
 	 * @param file
@@ -1319,7 +1325,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param src
 	 *            The BufferedImage to be written.
 	 * @param format
@@ -1350,7 +1356,7 @@ public abstract class Sanselan implements SanselanConstants {
 	 * and cannot be written. All other formats (PNG, GIF, TIFF, BMP, etc.) are
 	 * fully supported.
 	 * <p>
-	 * 
+	 *
 	 * @param src
 	 *            The BufferedImage to be written.
 	 * @param os

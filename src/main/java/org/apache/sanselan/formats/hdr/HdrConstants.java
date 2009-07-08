@@ -1,0 +1,6 @@
+package org.apache.sanselan.formats.hdr;
+
+public interface HdrConstants {
+    // #?RADIANCE
+    byte[] HEADER = new byte[]{ 0x23, 0x3F, 0x52, 0x41, 0x44, 0x49, 0x41, 0x4E, 0x43, 0x45 };
+}
