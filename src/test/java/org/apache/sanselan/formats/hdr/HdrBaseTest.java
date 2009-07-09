@@ -9,7 +9,7 @@ import org.apache.sanselan.ImageReadException;
 import org.apache.sanselan.Sanselan;
 import org.apache.sanselan.SanselanTest;
 
-public class HdrBaseTest extends SanselanTest {
+public abstract class HdrBaseTest extends SanselanTest {
     private static boolean isHdr( File file ) throws IOException,
                                                      ImageReadException
     {
