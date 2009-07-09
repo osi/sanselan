@@ -35,9 +35,19 @@ public class PngMultipleRoundtripTest extends PngBaseTest
 	public void test() throws IOException, ImageReadException,
 			ImageWriteException
 	{
-		File imagesFolder = new File("src\\test\\data\\images\\png\\3");
+		File imagesFolder = new File("src" +
+                                     File.separator +
+                                     "test" +
+                                     File.separator +
+                                     "data" +
+                                     File.separator +
+                                     "images" +
+                                     File.separator +
+                                     "png" +
+                                     File.separator +
+                                     "3");
 		assertTrue(imagesFolder.exists() && imagesFolder.isDirectory());
-		
+
 		File files[] = imagesFolder.listFiles();
 		for (int i = 0; i < files.length; i++)
 		{
@@ -46,7 +56,7 @@ public class PngMultipleRoundtripTest extends PngBaseTest
 				continue;
 			if(!imageFile.getName().toLowerCase().endsWith(".png"))
 				continue;
-			
+
 			Debug.debug();
 			Debug.debug("imageFile", imageFile);
 
