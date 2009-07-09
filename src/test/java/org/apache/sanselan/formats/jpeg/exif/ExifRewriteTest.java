@@ -507,7 +507,7 @@ public class ExifRewriteTest extends ExifBaseTest implements AllTagConstants
 			//			assertTrue(eq == true);
 			//			Debug.debug("a", a);
 			//			Debug.debug("b", b);
-			assertTrue(a[i] == b[i]);
+            assertEquals( a[i], b[i] );
 			//			Debug.debug("c");
 			//			assertTrue((0xff & a[i]) == (0xff & b[i]));
 		}
@@ -520,7 +520,7 @@ public class ExifRewriteTest extends ExifBaseTest implements AllTagConstants
 
 		//		Debug.debug("v1", v1 + " (" + Debug.getType(v1) + ")");
 		//		Debug.debug("v2", v2 + " (" + Debug.getType(v2) + ")");
-		assertTrue(v1.equals(v2));
+        assertEquals( v1, v2 );
 	}
 
 	private void compare(byte a[], byte b[])
