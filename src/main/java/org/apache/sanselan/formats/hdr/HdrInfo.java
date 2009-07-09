@@ -122,7 +122,7 @@ class HdrInfo extends BinaryFileFunctions {
 
         byte[] scanLineBytes = convertShortToByteArray( width, BinaryConstants.BYTE_ORDER_BIG_ENDIAN );
         byte[] rgbe = new byte[width * 4];
-        double[][] out = new double[3][width];
+        double[][] out = new double[3][width * height];
 
         for ( int i = 0; i < height; i++ ) {
             in.readAndVerifyBytes( TWO_TWO, "Scan line " + i + " expected to start with 0x2 0x2" );
@@ -136,12 +136,13 @@ class HdrInfo extends BinaryFileFunctions {
 
                 for ( int p = 0; p < width; p++ ) {
                     int mantissa = rgbe[p + eOffset] & 0xff;
-
+                    int pos = p + i * width;
+                    
                     if ( 0 == mantissa ) {
-                        out[channel][p] = 0;
+                        out[channel][pos] = 0;
                     } else {
                         double mult = Math.pow( 2, mantissa );
-                        out[channel][p] = ( ( rgbe[p + channelOffset] & 0xff ) + 0.5f ) * mult;
+                        out[channel][pos] = ( ( rgbe[p + channelOffset] & 0xff ) + 0.5f ) * mult;
                     }
                 }
             }
