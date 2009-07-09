@@ -134,6 +134,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>-Xmx512m</argLine>
+          <excludes>
+              <exclude>**/ExifRewriteTest.java</exclude>
+          </excludes>
           <systemProperties>
               <property>
                   <name>java.awt.headless</name>
