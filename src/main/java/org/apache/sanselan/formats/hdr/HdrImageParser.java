@@ -6,8 +6,8 @@ import java.awt.image.BandedSampleModel;
 import java.awt.image.BufferedImage;
 import java.awt.image.ComponentColorModel;
 import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferDouble;
 import java.awt.image.Raster;
+import java.awt.image.DataBufferFloat;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -91,7 +91,7 @@ public class HdrImageParser extends ImageParser {
         try {
             // It is necessary to create our own BufferedImage here as the
             // org.apache.sanselan.common.IBufferedImageFactory interface does not expose this complexity
-            DataBuffer buffer = new DataBufferDouble( info.getPixelData(), info.getWidth() * info.getHeight() );
+            DataBuffer buffer = new DataBufferFloat( info.getPixelData(), info.getWidth() * info.getHeight() );
 
             return new BufferedImage(
                 new ComponentColorModel( ColorSpace.getInstance( ColorSpace.CS_sRGB ),

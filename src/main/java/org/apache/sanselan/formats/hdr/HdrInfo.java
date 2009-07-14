@@ -111,7 +111,7 @@ class HdrInfo extends BinaryFileFunctions {
         }
     }
 
-    public double[][] getPixelData() throws IOException, ImageReadException {
+    public float[][] getPixelData() throws IOException, ImageReadException {
         // Read into local variables to ensure that we have seeked into the file far enough
         int height = getHeight();
         int width = getWidth();
@@ -122,7 +122,7 @@ class HdrInfo extends BinaryFileFunctions {
 
         byte[] scanLineBytes = convertShortToByteArray( width, BinaryConstants.BYTE_ORDER_BIG_ENDIAN );
         byte[] rgbe = new byte[width * 4];
-        double[][] out = new double[3][width * height];
+        float[][] out = new float[3][width * height];
 
         for ( int i = 0; i < height; i++ ) {
             in.readAndVerifyBytes( TWO_TWO, "Scan line " + i + " expected to start with 0x2 0x2" );
@@ -137,11 +137,11 @@ class HdrInfo extends BinaryFileFunctions {
                 for ( int p = 0; p < width; p++ ) {
                     int mantissa = rgbe[p + eOffset] & 0xff;
                     int pos = p + i * width;
-                    
+
                     if ( 0 == mantissa ) {
                         out[channel][pos] = 0;
                     } else {
-                        double mult = Math.pow( 2, mantissa );
+                        float mult = (float) Math.pow( 2, mantissa - ( 128 + 8 ) );
                         out[channel][pos] = ( ( rgbe[p + channelOffset] & 0xff ) + 0.5f ) * mult;
                     }
                 }
