@@ -16,7 +16,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
   -->
-  
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
@@ -30,12 +30,12 @@
     <artifactId>apache</artifactId>
     <version>4</version>
   </parent>
-    
+
   <groupId>org.apache.sanselan</groupId>
   <artifactId>sanselan</artifactId>
   <name>Apache Sanselan</name>
-  
-  <version>0.98-hdr-electrotank</version>
+
+  <version>0.98.1-hdr-electrotank</version>
   <packaging>bundle</packaging>
 
   <!--
@@ -47,7 +47,7 @@
   <organization>
   	<url>http://cwiki.apache.org/SANSELAN/</url>
   </organization>
-  
+
   <scm>
     <connection>scm:svn:http://svn.apache.org/repos/asf/incubator/sanselan/trunk</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/sanselan/trunk</developerConnection>
@@ -66,7 +66,7 @@
 
   <build>
     <plugins>
-    
+
       <!-- Use Java 1.4 everywhere -->
       <plugin>
         <inherited>true</inherited>
@@ -145,7 +145,7 @@
           </systemProperties>
         </configuration>
       </plugin>
-    </plugins>  
+    </plugins>
     <!-- Let's be sure that we use the latest releases of the plugins -->
     <pluginManagement>
       <plugins>
@@ -187,7 +187,7 @@
       </resource>
     </resources>
   </build>
-    
+
   <profiles>
     <profile>
       <!-- The release profile contains specifal configuration of releases. -->
@@ -263,12 +263,12 @@
               </execution>
             </executions>
           </plugin>
-          
+
           <!-- The release artifacts -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
-            <configuration>          
+            <configuration>
 	            <descriptors>
 	            	<descriptor>src/assemble/bin.xml</descriptor>
 	            	<descriptor>src/assemble/src.xml</descriptor>
@@ -291,7 +291,7 @@
       </build>
     </profile>
   </profiles>
-  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -300,7 +300,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
+
   <reporting>
     <plugins>
       <plugin>
@@ -314,7 +314,7 @@
   <!-- ====================================================================== -->
   <!-- M A I L I N G   L I S T S                                              -->
   <!-- ====================================================================== -->
-  
+
   <mailingLists>
 
     <mailingList>
@@ -331,11 +331,11 @@
       <archive>http://mail-archives.apache.org/mod_mbox/sanselan-commits/</archive>
     </mailingList>
   </mailingLists>
-	
+
   <!-- ====================================================================== -->
   <!-- P E O P L E                                                            -->
   <!-- ====================================================================== -->
-  
+
   <developers>
     <developer>
       <name>Charles M. Chen</name>
@@ -362,5 +362,5 @@
       <id>cziegeler</id>
     </developer>
   </developers>
-	
+
 </project>
